@@ -1,0 +1,50 @@
+<!-- ################################### -->
+<!-- # SOPHOS RULES                    #  --> 
+<!-- ################################### -->
+<!-- by Michele "o-zone@zerozone.it" Pinassi -->
+<!-- Last update 17.11.2021 -->
+
+<!--
+{"source_info": {"ip": "[IP]"}, "customer_id": "[customer-id]", "severity": "low", "endpoint_id": "[endpoint-id]", "endpoint_type": "computer", "type": "Event::Endpoint::Device::AlertedOnly", "name": "Periferica consentita: HUAWEI VNS-L31", "id": "[ID]", "group": "PERIPHERALS", "datastream": "event", "rt": "2021-11-17T11:53:55.499Z", "duid": "[DUID]", "end": "2021-11-17T11:53:55.492Z", "suser": "[user]", "dhost": "PC-"}
+-->
+
+<!--
+FAQ on SIEM: https://support.sophos.com/support/s/article/KB-000036413?language=en_US
+
+API details: https://support.sophos.com/support/s/article/KB-000038307?language=en_US
+
+Sophos Central SIEM Integration script: https://github.com/sophos/Sophos-Central-SIEM-Integration
+-->
+
+<group name="sophos,">
+
+<rule id="120000" level="0">
+  <decoded_as>json</decoded_as>
+  <field name="customer_id">\.+</field>
+  <field name="endpoint_id">\.+</field>
+  <description>Sophos cloud admin message</description>
+  <group>sophos,</group>
+</rule>
+
+<rule id="120001" level="5">
+  <if_sid>120000</if_sid>
+  <field name="severity">medium</field>
+  <description>Sophos medium severity alert</description>
+  <group>sophos,</group>
+</rule>
+
+<rule id="120002" level="8">
+  <if_sid>120000</if_sid>
+  <field name="severity">high</field>
+  <description>Sophos high severity alert</description>
+  <group>sophos,</group>
+</rule>
+
+<rule id="120003" level="12">
+  <if_sid>120000</if_sid>
+  <field name="severity">critical</field>
+  <description>Sophos CRITICAL severity alert</description>
+  <group>sophos,</group>
+</rule>
+
+</group>
